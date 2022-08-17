@@ -1,0 +1,64 @@
+import rabbitConnect from "../config/rabbitConnect.js";
+
+import memberService from "../services/member.service.js"
+import usersService from "../services/users.services.js"
+import channelService from "../services/channel.service.js"
+import meetingService from "../services/meeting.service.js"
+import messagesService from "../services/messages.service.js"
+
+
+
+
+const receiveMsg = () => {
+  rabbitConnect((conn) => {
+    conn.createChannel((err, channel) => {
+      if (err) console.error(err);
+      const queue = "chat_msm_test2";
+
+      channel.assertQueue(queue, {
+        durable: false,
+      });
+      channel.prefetch(1);
+      console.log(
+        " [*] Waiting for messages in %s. To exit press CTRL+C ",
+        queue
+      );
+      channel.consume(
+        queue,
+        async (msg) => {
+          const message = JSON.parse(msg.content.toString());
+          console.log(message);
+          switch (message.flag) {
+            case 'insert_member':
+              memberService.addMember(message);
+              break;
+
+            case 'insert_user':
+              usersService.addUsers(message);
+              break;
+            
+            case 'insert_channel':
+              channelService.addChannel(message);
+              break;
+
+            case 'insert_meeting':
+              meetingService.addMeeting(message);
+              break;
+
+            case 'insert_messages':
+              messagesService.addMessages(message);
+              break;
+              
+              default:
+                break;
+              }
+              console.log("[x] message recieved ", msg.content.toString());
+
+        },
+        { noAck: true }
+      );
+    });
+  });
+};
+
+export default receiveMsg;
