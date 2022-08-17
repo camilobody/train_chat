@@ -25,4 +25,27 @@ service.addChannel = (member) =>{
       });
 }
 
+service.updateChannel = (member) =>{ 
+  const connMySql = getConnectionMySql();
+  const query = () => {
+    return new Promise((res, rej) => {
+      connMySql.query(
+        `UPDATE channels SET id_user = '${member.id_user}' WHERE id_channel = '${member.id_channel}'`,
+        (err, result) => {
+          if (err) rej(err);
+          console.log(result);
+          res(console.log("execute query successfully"));
+        }
+      );
+    });
+  };
+  query()
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 export default service;

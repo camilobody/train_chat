@@ -11,7 +11,19 @@ service.addMember = (member) =>{
           (err, result) => {
             if (err) rej(err);
             console.log(result);
-            res(console.log("execute query successfully"));
+            try {
+              connMySql.query(
+                `INSERT INTO token_notification (device, id_user, token, type, id_member) VALUES ('${member.device}','','${member.token}','${member.type}','${member.id_member}')`,
+                (err, result) => {
+                  // Insert data token user
+                  if (err) rej(err);
+                  console.log(result);
+                  res(console.log("execute query successfully"));
+                }
+              );
+            } catch (error) {
+              console.log(error);
+            }
           }
         );
       });

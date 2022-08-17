@@ -5,8 +5,7 @@ import usersService from "../services/users.services.js"
 import channelService from "../services/channel.service.js"
 import meetingService from "../services/meeting.service.js"
 import messagesService from "../services/messages.service.js"
-
-
+import channelHistoryService from "../services/channelHistory.service.js"
 
 
 const receiveMsg = () => {
@@ -47,6 +46,22 @@ const receiveMsg = () => {
 
             case 'insert_messages':
               messagesService.addMessages(message);
+              break;
+
+            case 'update_statusmeeting':
+              meetingService.addStatusMeeting(message);
+              break;
+
+            case 'update_channel_user':
+              channelService.updateChannel(message);
+              break;
+
+            case 'insert_reassign':
+              channelHistoryService.addReassing(message);
+              break;
+
+            case 'update_user_status':
+              usersService.updateStatusUser(message);
               break;
               
               default:

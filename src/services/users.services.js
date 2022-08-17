@@ -23,14 +23,6 @@ service.addUsers = (member) =>{
               );
           }
         );
-        // connMySql.query(
-        //     `INSERT INTO users (first_name, id_user, last_name, role_id, status, id_rethink) VALUES ('${member.first_name}','${member.id_user}','${member.last_name}','${member.role_id}','${member.status}','${member.id_rethink}')`,
-        //     (err, result) => {
-        //       if (err) rej(err);
-        //       console.log(result);
-        //       res(console.log("execute query successfully"));
-        //     }
-        //   );
       });
     };
     query()
@@ -40,6 +32,29 @@ service.addUsers = (member) =>{
       .catch((err) => {
         console.log(err);
       });
+}
+
+service.updateStatusUser = (member) =>{ 
+  const connMySql = getConnectionMySql();
+  const query = () => {
+    return new Promise((res, rej) => {
+      connMySql.query(
+        `UPDATE users SET status = '${member.status}' WHERE id_user = '${member.id_user}'`,
+        (err, result) => {
+          if (err) rej(err);
+          console.log(result);
+          res(console.log("execute query successfully"));
+        }
+      );
+    });
+  };
+  query()
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 export default service;
