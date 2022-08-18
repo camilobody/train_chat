@@ -18,7 +18,7 @@ service.addMember = (member) =>{
                   // Insert data token user
                   if (err) rej(err);
                   console.log(result);
-                  res(console.log("execute query successfully"));
+                  res("execute query successfully")
                 }
               );
             } catch (error) {

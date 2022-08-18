@@ -38,7 +38,7 @@ service.addMessages = (member) =>{
           (err, result) => {
             if (err) rej(err);
             console.log(result);
-            res(console.log("execute query successfully"));
+            res("execute query successfully")
           }
         );
       });

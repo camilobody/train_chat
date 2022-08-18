@@ -11,7 +11,7 @@ service.addChannel = (member) =>{
           (err, result) => {
             if (err) rej(err);
             console.log(result);
-            res(console.log("execute query successfully"));
+            res("execute query successfully")
           }
         );
       });
@@ -33,8 +33,7 @@ service.updateChannel = (member) =>{
         `UPDATE channels SET id_user = '${member.id_user}' WHERE id_channel = '${member.id_channel}'`,
         (err, result) => {
           if (err) rej(err);
-          console.log(result);
-          res(console.log("execute query successfully"));
+          res("execute query successfully")
         }
       );
     });

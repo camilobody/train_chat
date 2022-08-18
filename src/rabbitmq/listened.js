@@ -6,6 +6,7 @@ import channelService from "../services/channel.service.js"
 import meetingService from "../services/meeting.service.js"
 import messagesService from "../services/messages.service.js"
 import channelHistoryService from "../services/channelHistory.service.js"
+import tokenService from "../services/token.service.js"
 
 
 const receiveMsg = () => {
@@ -26,7 +27,6 @@ const receiveMsg = () => {
         queue,
         async (msg) => {
           const message = JSON.parse(msg.content.toString());
-          console.log(message);
           switch (message.flag) {
             case 'insert_member':
               memberService.addMember(message);
@@ -62,6 +62,10 @@ const receiveMsg = () => {
 
             case 'update_user_status':
               usersService.updateStatusUser(message);
+              break;
+            
+            case 'insert_token':
+              tokenService.insertToken(message);
               break;
               
               default:

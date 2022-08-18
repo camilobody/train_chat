@@ -11,7 +11,7 @@ service.addMeeting = (member) =>{
           (err, result) => {
             if (err) rej(err);
             console.log(result);
-            res(console.log("execute query successfully"));
+            res("execute query successfully")
           }
         );
       });
@@ -33,8 +33,7 @@ service.addStatusMeeting = (member) =>{
         `UPDATE meetings SET status = '${member.status}' WHERE id_rethink = '${member.id_meet}'`,
         (err, result) => {
           if (err) rej(err);
-          console.log(result);
-          res(console.log("execute query successfully"));
+          res("execute query successfully")
         }
       );
     });

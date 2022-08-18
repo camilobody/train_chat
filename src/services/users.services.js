@@ -18,7 +18,7 @@ service.addUsers = (member) =>{
                   // Insert data token user
                   if (err) rej(err);
                   console.log(result);
-                  res(console.log("execute query successfully"));
+                  res("execute query successfully")
                 }
               );
           }
@@ -42,8 +42,7 @@ service.updateStatusUser = (member) =>{
         `UPDATE users SET status = '${member.status}' WHERE id_user = '${member.id_user}'`,
         (err, result) => {
           if (err) rej(err);
-          console.log(result);
-          res(console.log("execute query successfully"));
+          res("execute query successfully")
         }
       );
     });
