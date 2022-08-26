@@ -1,4 +1,6 @@
 import getConnectionMySql from "../config/mysqlConnect.js";
+import { formatLocalDate } from "../utils/fomat_local_date.js";
+import { InsertLogs } from "../utils/insert_logs.js";
 
 const service = {};
 
@@ -31,7 +33,10 @@ service.insertToken = (member) => {
       console.log(result);
     })
     .catch((err) => {
-      console.log(err);
+      InsertLogs({
+        connMySql: connMySql,
+        err: err,
+      });
     });
 };
 

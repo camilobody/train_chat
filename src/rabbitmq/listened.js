@@ -6,7 +6,8 @@ const receiveMsg = () => {
   rabbitConnect((conn) => {
     conn.createChannel((err, channel) => {
       if (err) console.error(err);
-      const queue = "chat_msm_test2";
+      // const queue = "chat_msm_test2";
+      const queue = process.env.QUEUE_DEV;
 
       channel.assertQueue(queue, {
         durable: false,

@@ -11,12 +11,20 @@ service.migration = async () => {
 
   return new Promise((resolve, reject) => {
     r.table("token_notification")
-      .slice(25161)
+      // .slice(11, 12)
+      // .limit(1)
       .run(conn, (err, cursor) => {
         if (err) reject(err);
         else {
           cursor.toArray(async (err, result) => {
             for (var i = 0; i < result.length; i++) {
+              if (result[0].token.token) {
+                result[0] = {
+                  id_rethink: result[0].id,
+                  ...result[0].token,
+                };
+              }
+
               const token = {
                 id_rethink: result[i].id,
                 ...result[i],
@@ -28,157 +36,157 @@ service.migration = async () => {
               if (i % 5000 == 0 && i > 0) {
                 console.log(i);
                 console.log("wait");
-                await sleep(60000);
+                await sleep(30000);
                 console.log("start");
               }
             }
             console.log("end tokens");
             await sleep(3000);
 
-            r.table("users").run(conn, (err, cursor) => {
-              if (err) reject(err);
-              else {
-                cursor.toArray(async (err, result) => {
-                  if (err) reject(err);
-                  else {
-                    for (const val of result) {
-                      const user = {
-                        id_rethink: val.id,
-                        ...val,
-                      };
+            // r.table("users").run(conn, (err, cursor) => {
+            //   if (err) reject(err);
+            //   else {
+            //     cursor.toArray(async (err, result) => {
+            //       if (err) reject(err);
+            //       else {
+            //         for (const val of result) {
+            //           const user = {
+            //             id_rethink: val.id,
+            //             ...val,
+            //           };
 
-                      await service.add({ message: user, flag: "insert_user" });
-                      console.log(i);
-                      await sleep(30);
+            //           await service.add({ message: user, flag: "insert_user" });
+            //           console.log(i);
+            //           await sleep(30);
 
-                      if (i % 5000 == 0 && i > 0) {
-                        console.log(i);
-                        console.log("wait");
-                        await sleep(40000);
-                        console.log("start");
-                      }
-                    }
-                    await sleep(4000);
+            //           if (i % 5000 == 0 && i > 0) {
+            //             console.log(i);
+            //             console.log("wait");
+            //             await sleep(40000);
+            //             console.log("start");
+            //           }
+            //         }
+            //         await sleep(4000);
 
-                    r.table("members").run(conn, (err, cursor) => {
-                      if (err) reject(err);
-                      else {
-                        cursor.toArray(async (err, result) => {
-                          if (err) reject(err);
-                          else {
-                            for (const val of result) {
-                              const userData = {
-                                id_rethink: val.id,
-                                ...val,
-                              };
+            //         r.table("members").run(conn, (err, cursor) => {
+            //           if (err) reject(err);
+            //           else {
+            //             cursor.toArray(async (err, result) => {
+            //               if (err) reject(err);
+            //               else {
+            //                 for (const val of result) {
+            //                   const userData = {
+            //                     id_rethink: val.id,
+            //                     ...val,
+            //                   };
 
-                              await service.add({
-                                msg: userData,
-                                flag: "insert_member",
-                              });
-                              console.log(i);
-                              await sleep(30);
+            //                   await service.add({
+            //                     msg: userData,
+            //                     flag: "insert_member",
+            //                   });
+            //                   console.log(i);
+            //                   await sleep(30);
 
-                              if (i % 5000 == 0 && i > 0) {
-                                console.log(i);
-                                console.log("wait");
-                                await sleep(40000);
-                                console.log("start");
-                              }
-                            }
-                            await sleep(5000);
+            //                   if (i % 5000 == 0 && i > 0) {
+            //                     console.log(i);
+            //                     console.log("wait");
+            //                     await sleep(40000);
+            //                     console.log("start");
+            //                   }
+            //                 }
+            //                 await sleep(5000);
 
-                            r.table("channels").run(conn, (err, cursor) => {
-                              if (err) reject(err);
-                              else {
-                                cursor.toArray(async (err, result) => {
-                                  if (err) reject(err);
-                                  else {
-                                    for (const val of result) {
-                                      const channel = {
-                                        id_rethink: val.id,
-                                        ...val,
-                                      };
+            //                 r.table("channels").run(conn, (err, cursor) => {
+            //                   if (err) reject(err);
+            //                   else {
+            //                     cursor.toArray(async (err, result) => {
+            //                       if (err) reject(err);
+            //                       else {
+            //                         for (const val of result) {
+            //                           const channel = {
+            //                             id_rethink: val.id,
+            //                             ...val,
+            //                           };
 
-                                      await service.add({
-                                        message: channel,
-                                        flag: "insert_channel",
-                                      });
-                                    }
-                                    await sleep(3000);
+            //                           await service.add({
+            //                             message: channel,
+            //                             flag: "insert_channel",
+            //                           });
+            //                         }
+            //                         await sleep(3000);
 
-                                    r.table("meetings").run(
-                                      conn,
-                                      (err, cursor) => {
-                                        if (err) reject(err);
-                                        else {
-                                          cursor.toArray(
-                                            async (err, result) => {
-                                              if (err) reject(err);
-                                              else {
-                                                for (const val of result) {
-                                                  const meet = {
-                                                    id_rethink: val.id,
-                                                    ...val,
-                                                  };
+            //                         r.table("meetings").run(
+            //                           conn,
+            //                           (err, cursor) => {
+            //                             if (err) reject(err);
+            //                             else {
+            //                               cursor.toArray(
+            //                                 async (err, result) => {
+            //                                   if (err) reject(err);
+            //                                   else {
+            //                                     for (const val of result) {
+            //                                       const meet = {
+            //                                         id_rethink: val.id,
+            //                                         ...val,
+            //                                       };
 
-                                                  await service.add({
-                                                    message: meet,
-                                                    flag: "insert_meeting",
-                                                  });
-                                                }
+            //                                       await service.add({
+            //                                         message: meet,
+            //                                         flag: "insert_meeting",
+            //                                       });
+            //                                     }
 
-                                                await sleep(3000);
+            //                                     await sleep(3000);
 
-                                                r.table("messages").run(
-                                                  conn,
-                                                  (err, cursor) => {
-                                                    if (err) reject(err);
-                                                    else {
-                                                      cursor.toArray(
-                                                        async (err, result) => {
-                                                          if (err) reject(err);
-                                                          else {
-                                                            for (const val of result) {
-                                                              const message = {
-                                                                id_rethink:
-                                                                  val.id,
-                                                                ...val,
-                                                              };
+            //                                     r.table("messages").run(
+            //                                       conn,
+            //                                       (err, cursor) => {
+            //                                         if (err) reject(err);
+            //                                         else {
+            //                                           cursor.toArray(
+            //                                             async (err, result) => {
+            //                                               if (err) reject(err);
+            //                                               else {
+            //                                                 for (const val of result) {
+            //                                                   const message = {
+            //                                                     id_rethink:
+            //                                                       val.id,
+            //                                                     ...val,
+            //                                                   };
 
-                                                              await service.add(
-                                                                {
-                                                                  message:
-                                                                    message,
-                                                                  flag: "insert_messages",
-                                                                }
-                                                              );
-                                                              await sleep(100);
-                                                            }
-                                                          }
-                                                        }
-                                                      );
-                                                    }
-                                                  }
-                                                );
-                                              }
-                                            }
-                                          );
-                                        }
-                                      }
-                                    );
-                                  }
-                                });
-                              }
-                            });
-                          }
-                        });
-                      }
-                    });
-                  }
-                });
-              }
-            });
+            //                                                   await service.add(
+            //                                                     {
+            //                                                       message:
+            //                                                         message,
+            //                                                       flag: "insert_messages",
+            //                                                     }
+            //                                                   );
+            //                                                   await sleep(100);
+            //                                                 }
+            //                                               }
+            //                                             }
+            //                                           );
+            //                                         }
+            //                                       }
+            //                                     );
+            //                                   }
+            //                                 }
+            //                               );
+            //                             }
+            //                           }
+            //                         );
+            //                       }
+            //                     });
+            //                   }
+            //                 });
+            //               }
+            //             });
+            //           }
+            //         });
+            //       }
+            //     });
+            //   }
+            // });
 
             console.log("migration");
 
