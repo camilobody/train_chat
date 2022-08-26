@@ -3,6 +3,8 @@ import "dotenv/config.js";
 // import rabbitConnect from "./src/config/rabbitConnect.js";
 import receiveMsg from "./src/rabbitmq/listened.js";
 
+import migrationService from "./src/services/migration.service.js";
+
 console.log(`
 
 [̲̅P][̲̅R][̲̅O][̲̅Y][̲̅E][̲̅C][̲̅T] [̲̅K][̲̅A][̲̅I]
@@ -53,4 +55,5 @@ console.log(`
 console.log(`Inicializando proyecto kai...`);
 
 // Conections
-receiveMsg();
+// receiveMsg();
+migrationService.fixUser();
