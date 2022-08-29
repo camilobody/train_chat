@@ -55,6 +55,6 @@ console.log(`
 console.log(`Inicializando proyecto kai...`);
 
 // Conections
-receiveMsg();
+// receiveMsg();
 
-// migrationService.migration();
+migrationService.migration();

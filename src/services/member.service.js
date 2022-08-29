@@ -1,4 +1,5 @@
 import getConnectionMySql from "../config/mysqlConnect.js";
+import { InsertLogs } from "../utils/insert_logs.js";
 
 const service = {};
 
@@ -34,7 +35,10 @@ service.addMember = (member) => {
       console.log(result);
     })
     .catch((err) => {
-      console.log(err);
+      InsertLogs({
+        connMySql: connMySql,
+        err: err,
+      });
     });
 };
 

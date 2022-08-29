@@ -1,13 +1,14 @@
 import getConnectionMySql from "../config/mysqlConnect.js";
+import { InsertLogs } from "../utils/insert_logs.js";
 
-const service = {}
+const service = {};
 
-service.addMessages = (member) =>{ 
-    const connMySql = getConnectionMySql();
-    const query = () => {
-      return new Promise((res, rej) => {
-        connMySql.query(
-          `INSERT INTO messages (
+service.addMessages = (member) => {
+  const connMySql = getConnectionMySql();
+  const query = () => {
+    return new Promise((res, rej) => {
+      connMySql.query(
+        `INSERT INTO messages (
             author, 
             author_name, 
             author_type, 
@@ -35,21 +36,24 @@ service.addMessages = (member) =>{
               '${member.name_file ?? null}',
               '${member.size_file ?? null}'
             )`,
-          (err, result) => {
-            if (err) rej(err);
-            console.log(result);
-            res("execute query successfully")
-          }
-        );
+        (err, result) => {
+          if (err) rej(err);
+          console.log(result);
+          res("execute query successfully");
+        }
+      );
+    });
+  };
+  query()
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => {
+      InsertLogs({
+        connMySql: connMySql,
+        err: err,
       });
-    };
-    query()
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-}
+    });
+};
 
 export default service;
