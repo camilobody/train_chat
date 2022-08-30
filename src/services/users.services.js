@@ -13,15 +13,15 @@ service.addUsers = (member) => {
         (err, result) => {
           if (err) rej(err);
           console.log(result);
-          connMySql.query(
-            `INSERT INTO token_notification (device, id_user, token, type, id_member) VALUES ('${member.device}','${member.id_user}','${member.token}','${member.type}','')`,
-            (err, result) => {
-              // Insert data token user
-              if (err) rej(err);
-              console.log(result);
-              res("execute query successfully");
-            }
-          );
+          // connMySql.query(
+          //   `INSERT INTO token_notification (device, id_user, token, type, id_member) VALUES ('${member.device}','${member.id_user}','${member.token}','${member.type}','')`,
+          //   (err, result) => {
+          //     // Insert data token user
+          //     if (err) rej(err);
+          //     console.log(result);
+          //     res("execute query successfully");
+          //   }
+          // );
         }
       );
     });

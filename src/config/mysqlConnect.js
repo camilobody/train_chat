@@ -6,6 +6,7 @@ export default function () {
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
+    charset: "utf8mb4",
   });
 
   conn.connect((err) => {
