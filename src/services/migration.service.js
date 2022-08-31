@@ -18,12 +18,12 @@ service.migration = async () => {
     //     else {
     //       cursor.toArray(async (err, result) => {
     //         for (var i = 0; i < result.length; i++) {
-    //           if (result[0].token.token) {
-    //             result[0] = {
-    //               id_rethink: result[0].id,
-    //               ...result[0].token,
-    //             };
-    //           }
+    //           // if (result[i].token.token) {
+    //           //   result[i] = {
+    //           //     id_rethink: result[i].id,
+    //           //     ...result[i].token,
+    //           //   };
+    //           // }
 
     //           const token = {
     //             id_rethink: result[i].id,
@@ -49,10 +49,11 @@ service.migration = async () => {
     //             cursor.toArray(async (err, result) => {
     //               if (err) reject(err);
     //               else {
-    //                 for (const val of result) {
+    //                 for (var i = 0; i < result.length; i++) {
+    //                   // for (const val of result) {
     //                   const user = {
-    //                     id_rethink: val.id,
-    //                     ...val,
+    //                     id_rethink: result[i].id,
+    //                     ...result[i],
     //                   };
 
     //                   await service.add({ message: user, flag: "insert_user" });
@@ -74,9 +75,10 @@ service.migration = async () => {
     //                     cursor.toArray(async (err, result) => {
     //                       if (err) reject(err);
     //                       else {
-    //                         for (const val of result) {
+    //                         for (var i = 0; i < result.length; i++) {
+    //                           // for (const val of result) {
     //                           const userData = {
-    //                             id_rethink: val.id,
+    //                             id_rethink: result[i].id,
     //                             ...val,
     //                           };
 
@@ -84,15 +86,15 @@ service.migration = async () => {
     //                             message: userData,
     //                             flag: "insert_member",
     //                           });
-    //                           // console.log(i);
+    //                           console.log(i);
     //                           await sleep(30);
 
-    //                           // if (i % 5000 == 0 && i > 0) {
-    //                           //   console.log(i);
-    //                           //   console.log("wait");
-    //                           //   await sleep(40000);
-    //                           //   console.log("start");
-    //                           // }
+    //                           if (i % 5000 == 0 && i > 0) {
+    //                             console.log(i);
+    //                             console.log("wait");
+    //                             await sleep(40000);
+    //                             console.log("start");
+    //                           }
     //                         }
     //                         await sleep(5000);
 
@@ -102,11 +104,14 @@ service.migration = async () => {
     //                             cursor.toArray(async (err, result) => {
     //                               if (err) reject(err);
     //                               else {
-    //                                 for (const val of result) {
+    //                                 for (var i = 0; i < result.length; i++) {
+    //                                   // for (const val of result) {
     //                                   const channel = {
-    //                                     id_rethink: val.id,
+    //                                     id_rethink: result[i].id,
     //                                     ...val,
     //                                   };
+
+    //                                   console.log(i);
 
     //                                   await service.add({
     //                                     message: channel,
@@ -124,9 +129,14 @@ service.migration = async () => {
     //                                         async (err, result) => {
     //                                           if (err) reject(err);
     //                                           else {
-    //                                             for (const val of result) {
+    //                                             for (
+    //                                               var i = 0;
+    //                                               i < result.length;
+    //                                               i++
+    //                                             ) {
+    //                                               // for (const val of result) {
     //                                               const meet = {
-    //                                                 id_rethink: val.id,
+    //                                                 id_rethink: result[i].id,
     //                                                 ...val,
     //                                               };
 
@@ -134,8 +144,15 @@ service.migration = async () => {
     //                                                 message: meet,
     //                                                 flag: "insert_meeting",
     //                                               });
-    //                                             }
+    //                                               await sleep(30);
 
+    //                                               if (i % 5000 == 0 && i > 0) {
+    //                                                 console.log(i);
+    //                                                 console.log("wait");
+    //                                                 await sleep(40000);
+    //                                                 console.log("start");
+    //                                               }
+    //                                             }
     //                                             await sleep(3000);
 
     //                                             r.table("messages").run(
@@ -147,10 +164,15 @@ service.migration = async () => {
     //                                                     async (err, result) => {
     //                                                       if (err) reject(err);
     //                                                       else {
-    //                                                         for (const val of result) {
+    //                                                         for (
+    //                                                           var i = 0;
+    //                                                           i < result.length;
+    //                                                           i++
+    //                                                         ) {
+    //                                                           // for (const val of result) {
     //                                                           const message = {
     //                                                             id_rethink:
-    //                                                               val.id,
+    //                                                               result[i].id,
     //                                                             ...val,
     //                                                           };
 
@@ -162,6 +184,21 @@ service.migration = async () => {
     //                                                             }
     //                                                           );
     //                                                           await sleep(100);
+    //                                                           if (
+    //                                                             i % 5000 == 0 &&
+    //                                                             i > 0
+    //                                                           ) {
+    //                                                             console.log(i);
+    //                                                             console.log(
+    //                                                               "wait"
+    //                                                             );
+    //                                                             await sleep(
+    //                                                               40000
+    //                                                             );
+    //                                                             console.log(
+    //                                                               "start"
+    //                                                             );
+    //                                                           }
     //                                                         }
     //                                                       }
     //                                                     }
@@ -195,28 +232,149 @@ service.migration = async () => {
     //     }
     //   });
 
-    r.table("messages").run(conn, (err, cursor) => {
+    r.table("members").run(conn, (err, cursor) => {
       if (err) reject(err);
       else {
         cursor.toArray(async (err, result) => {
           if (err) reject(err);
           else {
-            for (const val of result) {
-              const message = {
-                id_rethink: val.id,
-                ...val,
+            for (var i = 0; i < result.length; i++) {
+              // for (const val of result) {
+              const userData = {
+                id_rethink: result[i].id,
+                ...result[i],
               };
 
               await service.add({
-                message: message,
-                flag: "insert_messages",
+                message: userData,
+                flag: "insert_member",
               });
-              await sleep(100);
+              console.log(i);
+              await sleep(20);
+
+              if (i % 2000 == 0 && i > 0) {
+                console.log(i);
+                console.log("wait");
+                await sleep(30000);
+                console.log("start");
+              }
             }
+            await sleep(5000);
+
+            r.table("channels").run(conn, (err, cursor) => {
+              if (err) reject(err);
+              else {
+                cursor.toArray(async (err, result) => {
+                  if (err) reject(err);
+                  else {
+                    for (var i = 0; i < result.length; i++) {
+                      // for (const val of result) {
+                      const channel = {
+                        id_rethink: result[i].id,
+                        ...result[i],
+                      };
+
+                      console.log(i);
+
+                      await service.add({
+                        message: channel,
+                        flag: "insert_channel",
+                      });
+                    }
+                    await sleep(3000);
+
+                    r.table("meetings").run(conn, (err, cursor) => {
+                      if (err) reject(err);
+                      else {
+                        cursor.toArray(async (err, result) => {
+                          if (err) reject(err);
+                          else {
+                            for (var i = 0; i < result.length; i++) {
+                              // for (const val of result) {
+                              const meet = {
+                                id_rethink: result[i].id,
+                                ...result[i],
+                              };
+
+                              await service.add({
+                                message: meet,
+                                flag: "insert_meeting",
+                              });
+                              await sleep(30);
+
+                              if (i % 5000 == 0 && i > 0) {
+                                console.log(i);
+                                console.log("wait");
+                                await sleep(40000);
+                                console.log("start");
+                              }
+                            }
+                            await sleep(3000);
+
+                            r.table("messages").run(conn, (err, cursor) => {
+                              if (err) reject(err);
+                              else {
+                                cursor.toArray(async (err, result) => {
+                                  if (err) reject(err);
+                                  else {
+                                    for (var i = 0; i < result.length; i++) {
+                                      // for (const val of result) {
+                                      const message = {
+                                        id_rethink: result[i].id,
+                                        ...result[i],
+                                      };
+
+                                      await service.add({
+                                        message: message,
+                                        flag: "insert_messages",
+                                      });
+                                      await sleep(100);
+                                      if (i % 5000 == 0 && i > 0) {
+                                        console.log(i);
+                                        console.log("wait");
+                                        await sleep(40000);
+                                        console.log("start");
+                                      }
+                                    }
+                                  }
+                                });
+                              }
+                            });
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+            });
           }
         });
       }
     });
+
+    // r.table("messages").run(conn, (err, cursor) => {
+    //   if (err) reject(err);
+    //   else {
+    //     cursor.toArray(async (err, result) => {
+    //       if (err) reject(err);
+    //       else {
+    //         for (const val of result) {
+    //           const message = {
+    //             id_rethink: val.id,
+    //             ...val,
+    //           };
+
+    //           await service.add({
+    //             message: message,
+    //             flag: "insert_messages",
+    //           });
+    //           await sleep(100);
+    //         }
+    //       }
+    //     });
+    //   }
+    // });
   });
 };
 

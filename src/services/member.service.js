@@ -11,7 +11,7 @@ service.addMember = (member) => {
         `INSERT INTO members (id_member, document_number, email, first_name, last_name, mobile_phone,photo, id_rethink) VALUES ('${member.id_member}','${member.document_number}','${member.email}','${member.first_name}','${member.last_name}','${member.mobile_phone}','${member.photo}','${member.id_rethink}')`,
         (err, result) => {
           if (err) rej(err);
-          console.log(result);
+          // console.log(result);
           try {
             // connMySql.query(
             //   `INSERT INTO token_notification (device, id_user, token, type, id_member) VALUES ('${member.device}','','${member.token}','${member.type}','${member.id_member}')`,
@@ -22,6 +22,7 @@ service.addMember = (member) => {
             //     res("execute query successfully");
             //   }
             // );
+            res("execute query successfully");
           } catch (error) {
             console.log(error);
           }
@@ -31,7 +32,9 @@ service.addMember = (member) => {
   };
   query()
     .then((result) => {
-      connMySql.end();
+      connMySql.end(() => {
+        console.log("close connection");
+      });
       console.log(result);
     })
     .catch((err) => {
