@@ -13,7 +13,7 @@ export default function () {
     if (err) {
       console.log(err);
     } else {
-      console.log("connected");
+      // console.log("connected");
     }
   });
 
